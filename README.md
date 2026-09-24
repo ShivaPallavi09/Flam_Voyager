@@ -2,7 +2,7 @@
 
 > Senior Software Engineering Intern Assignment Submission for **Flam AI** (Bangalore).
 
-Flam Voyager is an **AI-native, non-chatbot interactive travel workspace** built with React 18, TypeScript, Tailwind CSS, and Google Gemini 2.5 Flash. Instead of a conversational chat bubble, it provides direct, tactile UI controls (live sliders, interactive timelines, inline AI activity swapping, dynamic group cost scaling, and structured packing checklists).
+Flam Voyager is an **AI-native, non-chatbot interactive travel workspace** built with React 18, TypeScript, Tailwind CSS, and Google Gemini 3.1 Flash Lite. Instead of a conversational chat bubble, it provides direct, tactile UI controls (live sliders, interactive timelines, inline AI activity swapping, dynamic group cost scaling, and structured packing checklists in Indian Rupees ₹).
 
 ---
 
@@ -11,15 +11,15 @@ Flam Voyager is an **AI-native, non-chatbot interactive travel workspace** built
 1. **Non-Chatbot AI Interactiveness**:
    - **Interactive Trip Configurator**: Real-time sliders for duration and group size, vibe tag selectors, and budget tier buttons.
    - **Inline AI Activity Swapper**: Click "Swap Activity" on any timeline card to trigger an isolated AI request to swap that single activity without re-architecting the whole plan.
-   - **Dynamic Budget & Group Scaler**: Recalculates category expense allocations live when adjusting group size sliders.
+   - **Dynamic Budget & Group Scaler**: Recalculates category expense allocations live in Indian Rupees (₹) when adjusting group size sliders.
    - **Smart Prep Checklist**: Categorized packing checklist with interactive completion tracking and item additions.
 
 2. **Dual AI Execution Pipeline**:
-   - **Live Google Gemini 2.5 Flash Integration**: Enforces JSON Schema mode (`responseMimeType: "application/json"`) for 100% structured component rendering.
+   - **Live Google Gemini 3.1 Flash Lite Integration**: Enforces JSON Schema mode (`responseMimeType: "application/json"`) for 100% structured component rendering.
    - **Zero-Dependency Mock Fallback**: Includes realistic, high-fidelity mock datasets for immediate offline testing without requiring an API key.
 
 3. **Production UX Polish**:
-   - Glassmorphism dark theme (`slate-950` palette).
+   - Organic Sunset Emerald & Amber Luxury glassmorphic theme.
    - Step-by-step skeleton loader with animated progress stages.
    - Graceful error handling banner with instant mock fallback.
    - Responsive across mobile, tablet, and desktop viewports.
@@ -33,7 +33,7 @@ Flam Voyager is an **AI-native, non-chatbot interactive travel workspace** built
            │
            ▼
 ┌─────────────────────────┐     Has API Key?     ┌──────────────────────────────┐
-│  React State Manager    │ ───────────────────► │  Google Gemini 2.5 Flash REST│
+│  React State Manager    │ ───────────────────► │  Gemini 3.1 Flash Lite REST  │
 │ (App.tsx & TripForm.tsx)│                      │  JSON Schema Mode Enforced   │
 └─────────────────────────┘ ◄─────────────────── └──────────────────────────────┘
            │                                                    │
@@ -48,9 +48,9 @@ Flam Voyager is an **AI-native, non-chatbot interactive travel workspace** built
                                ▼
             ┌────────────────────────────────────┐
             │   Interactive Dashboard Viewports  │
-            │  - Day-by-Day Timeline             │
+            │  - Day-by-Day Timeline (INR ₹)     │
             │  - Inline AI Activity Swapper      │
-            │  - Group Budget Scaler             │
+            │  - Group Budget Scaler (INR ₹)     │
             │  - Curated Hotels Grid             │
             │  - Prep Checklist                  │
             └────────────────────────────────────┘
@@ -61,9 +61,9 @@ Flam Voyager is an **AI-native, non-chatbot interactive travel workspace** built
 ## 🛠️ Technology Stack
 
 - **Frontend Framework**: React 18 + TypeScript + Vite
-- **Styling**: Tailwind CSS + Custom Glassmorphism
+- **Styling**: Tailwind CSS + Custom Organic Glassmorphism
 - **Iconography**: Lucide React
-- **AI Engine**: Google Gemini 2.5 Flash REST API (`application/json`)
+- **AI Engine**: Google Gemini 3.1 Flash Lite REST API (`application/json`)
 - **Interactivity**: Canvas-Confetti, React State Hooks
 
 ---
@@ -102,7 +102,7 @@ Flam Voyager is an **AI-native, non-chatbot interactive travel workspace** built
 
 ## 💡 How API Keys & Demo Mode Work
 
-- **Demo Mode**: No API key required! Simply choose a preset or fill out the form, and the application will instantly render a rich, realistic trip using the internal mock engine.
+- **Demo Mode**: No API key required! Simply choose a preset or fill out the form, and the application will instantly render a rich, realistic trip using the internal mock engine in Indian Rupees (₹).
 - **Custom Gemini API Key**: Click **"API Key Setup"** in the top right header to enter your free Google Gemini API key. All subsequent generations and activity swaps will call live AI models.
 
 ---
@@ -121,3 +121,7 @@ Flam Voyager is an **AI-native, non-chatbot interactive travel workspace** built
 - **Multi-Currency Support**: Future iteration will support live forex conversion APIs (EUR, JPY, GBP).
 
 ---
+
+## 📄 License
+
+MIT © 2026 Flam Voyager AI

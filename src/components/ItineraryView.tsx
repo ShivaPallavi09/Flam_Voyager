@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { RefreshCw, MapPin, DollarSign, Lightbulb, Clock, CheckCircle2 } from 'lucide-react';
+import { RefreshCw, MapPin, Lightbulb, Clock, CheckCircle2 } from 'lucide-react';
 import { TripPlan, ActivityItem } from '../types/trip';
 import { swapActivityWithAI } from '../services/geminiService';
 
@@ -97,6 +97,7 @@ export const ItineraryView: React.FC<ItineraryViewProps> = ({ trip, onUpdateTrip
         {activeDayObj?.activities.map((act) => {
           const isDone = !!completedActivities[act.id];
           const isSwapping = swappingId === act.id;
+          const costVal = act.costINR ?? (act as any).costUSD ?? 0;
 
           return (
             <div
@@ -151,15 +152,15 @@ export const ItineraryView: React.FC<ItineraryViewProps> = ({ trip, onUpdateTrip
                 </button>
               </div>
 
-              {/* Meta details (Location, Cost, Tips) */}
+              {/* Meta details (Location, Cost in Rupees ₹, Tips) */}
               <div className="mt-4 pt-3 border-t border-zinc-800/80 flex flex-wrap items-center gap-4 text-xs text-zinc-400">
                 <span className="flex items-center gap-1 text-zinc-300">
                   <MapPin className="w-3.5 h-3.5 text-emerald-400" /> {act.location}
                 </span>
 
-                <span className="flex items-center gap-1 text-zinc-300">
-                  <DollarSign className="w-3.5 h-3.5 text-amber-400" />
-                  {act.costUSD === 0 ? 'Free' : `$${act.costUSD} / person`}
+                <span className="flex items-center gap-1 text-zinc-300 font-medium">
+                  <span className="text-amber-400 font-bold text-sm">₹</span>
+                  {costVal === 0 ? 'Free Entry' : `₹${costVal.toLocaleString('en-IN')} / person`}
                 </span>
 
                 {act.tips && (

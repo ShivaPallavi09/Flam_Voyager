@@ -7,7 +7,7 @@ export interface ActivityItem {
   title: string;
   description: string;
   location: string;
-  costUSD: number;
+  costINR: number;
   category: 'Sightseeing' | 'Food & Dining' | 'Culture' | 'Outdoor' | 'Shopping' | 'Nightlife';
   tips: string;
 }
@@ -22,7 +22,7 @@ export interface DayItinerary {
 export interface HotelRecommendation {
   name: string;
   type: string;
-  pricePerNightUSD: number;
+  pricePerNightINR: number;
   rating: number;
   amenities: string[];
   description: string;
@@ -49,7 +49,7 @@ export interface TripPlan {
   destination: string;
   durationDays: number;
   travelersCount: number;
-  estimatedBudgetUSD: number;
+  estimatedBudgetINR: number;
   currencySymbol: string;
   travelStyle: TravelStyle;
   heroImageUrl: string;

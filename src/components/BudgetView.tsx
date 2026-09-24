@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DollarSign, Users, PieChart, Hotel, Utensils, Compass, Car } from 'lucide-react';
+import { Users, PieChart, Hotel, Utensils, Compass, Car } from 'lucide-react';
 import { TripPlan } from '../types/trip';
 
 interface BudgetViewProps {
@@ -9,36 +9,36 @@ interface BudgetViewProps {
 export const BudgetView: React.FC<BudgetViewProps> = ({ trip }) => {
   const [scaleTravelers, setScaleTravelers] = useState<number>(trip.travelersCount);
 
-  // Dynamic budget calculation based on scaleTravelers ratio
+  const baseBudget = trip.estimatedBudgetINR ?? (trip as any).estimatedBudgetUSD ?? 150000;
   const ratio = scaleTravelers / (trip.travelersCount || 1);
-  const scaledTotal = Math.round(trip.estimatedBudgetUSD * ratio);
+  const scaledTotal = Math.round(baseBudget * ratio);
   const scaledPerPerson = Math.round(scaledTotal / scaleTravelers);
 
   const categories = [
     {
       name: 'Accommodation',
-      amount: Math.round(trip.budgetBreakdown.accommodation * ratio),
+      amount: Math.round((trip.budgetBreakdown?.accommodation || 0) * ratio),
       icon: Hotel,
       color: 'from-amber-500 to-yellow-400',
       textColor: 'text-amber-400'
     },
     {
       name: 'Food & Dining',
-      amount: Math.round(trip.budgetBreakdown.food * ratio),
+      amount: Math.round((trip.budgetBreakdown?.food || 0) * ratio),
       icon: Utensils,
       color: 'from-emerald-500 to-teal-400',
       textColor: 'text-emerald-400'
     },
     {
       name: 'Activities & Tickets',
-      amount: Math.round(trip.budgetBreakdown.activities * ratio),
+      amount: Math.round((trip.budgetBreakdown?.activities || 0) * ratio),
       icon: Compass,
       color: 'from-rose-500 to-pink-400',
       textColor: 'text-rose-400'
     },
     {
       name: 'Local Transport',
-      amount: Math.round(trip.budgetBreakdown.transport * ratio),
+      amount: Math.round((trip.budgetBreakdown?.transport || 0) * ratio),
       icon: Car,
       color: 'from-violet-500 to-purple-400',
       textColor: 'text-violet-400'
@@ -52,18 +52,18 @@ export const BudgetView: React.FC<BudgetViewProps> = ({ trip }) => {
         <div className="glass-card p-5 rounded-2xl border border-zinc-800 flex items-center justify-between">
           <div>
             <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Estimated Total</span>
-            <div className="text-2xl font-extrabold text-white mt-1">${scaledTotal.toLocaleString()}</div>
-            <span className="text-[11px] text-zinc-400">Total estimated expenses</span>
+            <div className="text-2xl font-extrabold text-white mt-1">₹{scaledTotal.toLocaleString('en-IN')}</div>
+            <span className="text-[11px] text-zinc-400">Total estimated expenses (INR)</span>
           </div>
-          <div className="p-3 bg-amber-500/10 text-amber-400 rounded-xl border border-amber-500/20">
-            <DollarSign className="w-6 h-6" />
+          <div className="p-3 bg-amber-500/10 text-amber-400 rounded-xl border border-amber-500/20 font-bold text-xl flex items-center justify-center">
+            ₹
           </div>
         </div>
 
         <div className="glass-card p-5 rounded-2xl border border-zinc-800 flex items-center justify-between">
           <div>
             <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Per Person Cost</span>
-            <div className="text-2xl font-extrabold text-white mt-1">${scaledPerPerson.toLocaleString()}</div>
+            <div className="text-2xl font-extrabold text-white mt-1">₹{scaledPerPerson.toLocaleString('en-IN')}</div>
             <span className="text-[11px] text-zinc-400">Based on {scaleTravelers} traveler(s)</span>
           </div>
           <div className="p-3 bg-emerald-500/10 text-emerald-400 rounded-xl border border-emerald-500/20">
@@ -75,7 +75,7 @@ export const BudgetView: React.FC<BudgetViewProps> = ({ trip }) => {
           <div>
             <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Daily Avg / Person</span>
             <div className="text-2xl font-extrabold text-white mt-1">
-              ${Math.round(scaledPerPerson / (trip.durationDays || 1))}
+              ₹{Math.round(scaledPerPerson / (trip.durationDays || 1)).toLocaleString('en-IN')}
             </div>
             <span className="text-[11px] text-zinc-400">Across {trip.durationDays} day(s)</span>
           </div>
@@ -98,7 +98,7 @@ export const BudgetView: React.FC<BudgetViewProps> = ({ trip }) => {
         </div>
 
         <p className="text-xs text-zinc-400">
-          Slide to interactively adjust group size and recalculate real-time budget distribution.
+          Slide to interactively adjust group size and recalculate real-time budget distribution in Indian Rupees.
         </p>
 
         <input
@@ -113,7 +113,7 @@ export const BudgetView: React.FC<BudgetViewProps> = ({ trip }) => {
 
       {/* Category Expense Breakdown */}
       <div className="glass-card p-6 rounded-3xl border border-zinc-800 space-y-5">
-        <h3 className="text-base font-bold text-white">Category Allocation Breakdown</h3>
+        <h3 className="text-base font-bold text-white">Category Allocation Breakdown (INR)</h3>
 
         <div className="space-y-4">
           {categories.map((cat) => {
@@ -127,7 +127,7 @@ export const BudgetView: React.FC<BudgetViewProps> = ({ trip }) => {
                     <Icon className={`w-4 h-4 ${cat.textColor}`} /> {cat.name}
                   </span>
                   <span className="text-zinc-300">
-                    ${cat.amount.toLocaleString()} ({percentage}%)
+                    ₹{cat.amount.toLocaleString('en-IN')} ({percentage}%)
                   </span>
                 </div>
 

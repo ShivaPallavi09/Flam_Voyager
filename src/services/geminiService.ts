@@ -1,7 +1,7 @@
 import { TripPlan, TripFormInputs, ActivityItem } from '../types/trip';
 import { generateMockTripFromInputs, ALTERNATIVE_ACTIVITIES_POOL } from './mockData';
 
-const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
+const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent';
 
 export function getStoredApiKey(): string | null {
   return localStorage.getItem('FLAM_GEMINI_API_KEY') || (import.meta as any).env?.VITE_GEMINI_API_KEY || null;
@@ -24,7 +24,7 @@ export async function generateTripWithAI(inputs: TripFormInputs, userApiKey?: st
   }
 
   const prompt = `
-You are a master world-class travel architect and local guide. Create a detailed structured JSON trip itinerary.
+You are a master world-class travel architect and local guide. Create a detailed structured JSON trip itinerary for an Indian traveler using Gemini 3.1 Flash Lite.
 
 TRIP REQUIREMENTS:
 - Destination: ${inputs.destination}
@@ -32,20 +32,22 @@ TRIP REQUIREMENTS:
 - Group Size: ${inputs.travelersCount} travelers
 - Budget Tier: ${inputs.budgetLevel}
 - Travel Style / Vibe: ${inputs.travelStyle}
+- Currency Format: ALL COSTS MUST BE IN INDIAN RUPEES (INR / ₹)
 - Specific Interests: ${inputs.interests.join(', ') || 'Local food, sightseeing, culture'}
 ${inputs.specialRequests ? `- Special Requests: ${inputs.specialRequests}` : ''}
 
 CRITICAL RULES:
 1. Return strictly valid raw JSON only. Do not wrap in backticks (\`\`\`json).
-2. Follow this exact JSON schema:
+2. All financial values (budgetBreakdown, estimatedBudgetINR, costINR, pricePerNightINR) MUST be realistic numbers in Indian Rupees (INR / ₹).
+3. Follow this exact JSON schema:
 {
   "id": "trip-${Date.now()}",
   "tripTitle": "Catchy Trip Title",
   "destination": "${inputs.destination}",
   "durationDays": ${inputs.durationDays},
   "travelersCount": ${inputs.travelersCount},
-  "estimatedBudgetUSD": number,
-  "currencySymbol": "$",
+  "estimatedBudgetINR": number,
+  "currencySymbol": "₹",
   "travelStyle": "${inputs.travelStyle}",
   "heroImageUrl": "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=80",
   "overview": "2-3 sentence overview of trip vibe.",
@@ -67,9 +69,9 @@ CRITICAL RULES:
           "title": "Activity name",
           "description": "Engaging 1-2 sentence description.",
           "location": "Specific landmark/neighborhood name",
-          "costUSD": number,
+          "costINR": number,
           "category": "Sightseeing" | "Food & Dining" | "Culture" | "Outdoor" | "Shopping" | "Nightlife",
-          "tips": "Practical tip (e.g. best time, ticket tips)"
+          "tips": "Practical tip"
         }
       ]
     }
@@ -78,7 +80,7 @@ CRITICAL RULES:
     {
       "name": "Hotel Name",
       "type": "Hotel category",
-      "pricePerNightUSD": number,
+      "pricePerNightINR": number,
       "rating": 4.8,
       "amenities": ["Wi-Fi", "Pool", "Breakfast"],
       "description": "Short description",
@@ -132,6 +134,7 @@ Provide exactly ${inputs.durationDays} days. Each day MUST contain exactly 3 act
 
     const cleanedJson = candidateText.replace(/^```json\s*/i, '').replace(/\s*```$/, '').trim();
     const parsedTrip: TripPlan = JSON.parse(cleanedJson);
+    parsedTrip.currencySymbol = '₹';
     parsedTrip.createdAt = new Date().toISOString();
     return parsedTrip;
   } catch (error) {
@@ -157,7 +160,7 @@ export async function swapActivityWithAI(
   }
 
   const prompt = `
-Give me ONE alternative replacement activity in ${destination} for a ${currentActivity.timeOfDay} slot.
+Give me ONE alternative replacement activity in ${destination} for a ${currentActivity.timeOfDay} slot for an Indian traveler using Gemini 3.1 Flash Lite.
 It should be different from "${currentActivity.title}".
 
 Return STRICT RAW JSON only matching this schema:
@@ -167,7 +170,7 @@ Return STRICT RAW JSON only matching this schema:
   "title": "New Activity Title",
   "description": "Short engaging description.",
   "location": "Neighborhood or venue name",
-  "costUSD": number,
+  "costINR": number in Indian Rupees,
   "category": "Sightseeing" | "Food & Dining" | "Culture" | "Outdoor" | "Shopping" | "Nightlife",
   "tips": "Pro travel tip"
 }
