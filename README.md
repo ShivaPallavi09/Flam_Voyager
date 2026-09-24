@@ -121,7 +121,3 @@ Flam Voyager is an **AI-native, non-chatbot interactive travel workspace** built
 - **Multi-Currency Support**: Future iteration will support live forex conversion APIs (EUR, JPY, GBP).
 
 ---
-
-## 📄 License
-
-MIT © 2026 Flam Voyager AI
